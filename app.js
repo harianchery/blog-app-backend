@@ -59,7 +59,23 @@ app.post("/signin", (req, res) => {                        //passsword is encryp
 ).catch()               
 })
 
-
+app.post("/viewusers",(req,res)=>{
+    let token=req.headers["token"]
+    jwt.verify(token,"blog-app",(error,decoded)=>{
+        if (error) {
+            res.json({"status":"unauthorized access"})
+        } else {
+            if(decoded)
+                {
+                    blogmodel.find().then(
+                        (response)=>{
+                            res.json(response)
+                        }
+                    ).catch()
+                }
+        }
+    })
+})
 
 
 app.listen(8081, () => {
